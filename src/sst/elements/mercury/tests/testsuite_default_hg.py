@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
+from datetime import datetime
 import os
+import subprocess
 
 from sst_unittest import *
 from sst_unittest_support import *
@@ -8,15 +10,34 @@ from sst_unittest_support import *
 
 class testcase_hg(SSTTestCase):
 
+    @classmethod
+    def setUpClass(cls):
+        hg_dir = subprocess.run(["sst-config", "SST_ELEMENT_TESTS", "mercury"],
+                                capture_output=True)
+        strip = hg_dir.stdout.rstrip()
+        os.chdir(strip)
+        subprocess.run("./build.sh")
+
+
     def setUp(self):
-        super(type(self), self).setUp()
+        super(testcase_hg, self).setUp()
         # Put test based setup code here. it is called once before every test
 
     def tearDown(self):
         # Put test based teardown code here. it is called once after every test
-        super(type(self), self).tearDown()
+        super(testcase_hg, self).tearDown()
 
 #####
+
+    def test_testme(self):
+        # get timestamp 1
+        ts1 = datetime.now()
+        # now = date.fromtimestamp(time.time())
+        # run command
+        self.simple_components_template("testme")
+        # get timestamp 2
+        # make sure ts2 - ts1 < 5 (sleep time from testme.cc)
+        pass
 
     def test_node(self):
         self.simple_components_template("example1")
