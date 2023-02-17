@@ -1,4 +1,6 @@
 #!/bin/bash
+MERCURY_TESTS_DIR=$(sst-config SST_ELEMENT_TESTS mercury)
+cd "$MERCURY_TESTS_DIR" || exit
 CXX=$(sst-config --CXX)
 ELEMENT_CXXFLAGS=$(sst-config --ELEMENT_CXXFLAGS)
 ELEMENT_LDFLAGS=$(sst-config --ELEMENT_LDFLAGS)

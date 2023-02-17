@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from datetime import datetime
 import os
 import subprocess
 
@@ -14,10 +13,8 @@ class testcase_hg(SSTTestCase):
     def setUpClass(cls):
         hg_dir = subprocess.run(["sst-config", "SST_ELEMENT_TESTS", "mercury"],
                                 capture_output=True)
-        strip = hg_dir.stdout.rstrip()
-        os.chdir(strip)
-        subprocess.run("./build.sh")
-
+        build_sh = hg_dir.stdout.rstrip().decode() + "/build.sh"
+        subprocess.run(build_sh)
 
     def setUp(self):
         super(testcase_hg, self).setUp()
