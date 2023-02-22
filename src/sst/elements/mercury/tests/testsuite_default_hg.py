@@ -27,38 +27,19 @@ class testcase_hg(SSTTestCase):
 #####
 
     def test_testme(self):
-        # get timestamp 1
-        ts1 = datetime.now()
-        # now = date.fromtimestamp(time.time())
-        # run command
-        self.simple_components_template("testme")
-        # get timestamp 2
-        # make sure ts2 - ts1 < 5 (sleep time from testme.cc)
-        pass
+        lib_dir = subprocess.run(["sst-config", "SST_ELEMENT_LIBRARY", "SST_ELEMENT_LIBRARY_LIBDIR"], capture_output=True)
+        lib_dir = lib_dir.stdout.rstrip().decode()
+        tests_dir = subprocess.run(["sst-config", "SST_ELEMENT_TESTS", "mercury"], capture_output=True)
+        tests_dir = tests_dir.stdout.rstrip().decode()
+        sst_lib_path = lib_dir + ":" + tests_dir
 
-    def test_node(self):
-        self.simple_components_template("example1")
+        paths = os.environ.get("SST_LIB_PATH")
+        if paths is None:
+            os.environ["SST_LIB_PATH"] = sst_lib_path
+        else:
+            os.environ["SST_LIB_PATH"] = paths + ":" + sst_lib_path
 
-    def test_basic_clocks(self):
-        self.simple_components_template("basicClocks")
-
-    def test_basic_links(self):
-        self.simple_components_template("basicLinks")
-
-    def test_basic_params(self):
-        self.simple_components_template("basicParams")
-
-    def test_basic_statistics_0(self):
-        self.simple_components_template("basicStatistics0")
-
-    def test_basic_statistics_1(self):
-        self.simple_components_template("basicStatistics1")
-
-    def test_basic_statistics_2(self):
-        self.simple_components_template("basicStatistics2")
-
-    #def test_simple_rng_component_marsaglia(self):
-    #    self.simple_components_template("simpleRNGComponent_marsaglia", striptotail=1)
+        self.simple_components_template("ostest2")
 
 #####
 
