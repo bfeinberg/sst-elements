@@ -114,6 +114,9 @@ private:
     // Local variables
     uint64_t timestamp_;
 
+    // Memory region for global accesses
+    MemRegion region_;
+
     // Event handling
     bool clock(SST::Cycle_t cycle);
 

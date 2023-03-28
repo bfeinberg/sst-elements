@@ -153,6 +153,10 @@ Scratchpad::Scratchpad(ComponentId_t id, Params &params) : Component(id) {
         sizeBytes = 1 << log2Of(scratch_->getMemSize());
     }
 
+    //Scratchpad assumes it runs 0 to size
+    region_.start = 0;
+    region_.end = scratchSize_;
+
     backing_ = nullptr;
     if (backingType == "mmap") {
         std::string memoryFile = params.find<std::string>("memory_file", "");
@@ -296,7 +300,11 @@ void Scratchpad::init(unsigned int phase) {
     // Send initial info out
     if (!phase) {
         linkDown_->sendInitData(new MemEventInitCoherence(getName(), Endpoint::Scratchpad, true, true, scratchLineSize_, true));
-        if (linkUp_ != linkDown_) linkUp_->sendInitData(new MemEventInitCoherence(getName(), Endpoint::Scratchpad, true, true, scratchLineSize_, true));
+        linkDown_->sendInitData(new MemEventInitEndpoint(getName().c_str(), Endpoint::Scratchpad, region_, true));
+        if (linkUp_ != linkDown_) {
+            linkUp_->sendInitData(new MemEventInitCoherence(getName(), Endpoint::Scratchpad, true, true, scratchLineSize_, true));
+            linkUp_->sendInitData(new MemEventInitEndpoint(getName().c_str(), Endpoint::Scratchpad, region_, true));
+        }
     }
 
     // Handle incoming events

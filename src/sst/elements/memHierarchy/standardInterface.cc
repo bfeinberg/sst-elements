@@ -504,6 +504,9 @@ Event* StandardInterface::MemEventConverter::convert(StandardMem::MoveData* req)
     if (req->posted) {
         move->setFlag(MemEventBase::F_NORESPONSE);
     }
+    move->setRqstr(iface->getName());
+    move->setThreadID(req->tid); 
+    move->setDst(iface->link_->getTargetDestination(bAddrDst));
     move->setSize(req->size);
     move->setSrcVirtualAddress(req->vSrc);
     move->setDstVirtualAddress(req->vDst);
