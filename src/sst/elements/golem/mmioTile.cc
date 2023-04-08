@@ -206,7 +206,6 @@ void MMIOTile::StandardMemHandlers::handle(StandardMem::Read* read) {
     tile->memory->send(resp);
 }
 
-
 void MMIOTile::StandardMemHandlers::handle(StandardMem::Write* write) {
     uint64_t baseAddr = write->pAddr;
     uint64_t size = write->size;

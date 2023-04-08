@@ -67,8 +67,8 @@ public:
 
         StandardMemHandlers(MMIOTile* tile, SST::Output *out) : Interfaces::StandardMem::RequestHandler(out), tile(tile) {}
         virtual ~StandardMemHandlers() {}
-        virtual void handle(Interfaces::StandardMem::Read* resp) override;
-        virtual void handle(Interfaces::StandardMem::Write* write) override;
+        virtual void handle(Interfaces::StandardMem::Read*) override;
+        virtual void handle(Interfaces::StandardMem::Write*) override;
 
         MMIOTile* tile;
     };
